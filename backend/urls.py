@@ -14,27 +14,36 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.conf.urls import url, include
-
-# from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls.static import static
+# from django.contrib.auth.models import User
+
 from rest_framework import routers, serializers, viewsets
+from rest_framework.authtoken import views as rest_framework_views
+from rest_framework_swagger.views import get_swagger_view
 
 from toys.views import ToyViewSet
 from customers.views import CustomerViewSet
 
+# Set up user
 User = get_user_model()
 
+# Set up drf routing
 router = routers.DefaultRouter()
 router.register(r'customers', CustomerViewSet)
 router.register(r'toys', ToyViewSet)
 
+schema_view = get_swagger_view(title='Playhopp API')
+
 
 urlpatterns = [
+    url(r'^api-token-auth/$', rest_framework_views.obtain_auth_token, name='token_login'),
+
     url(r'^', include(router.urls)),
+    url(r'^swagger', schema_view),
 
-    path('admin/', admin.site.urls),
-    path(r'api-auth/', include('rest_framework.urls')),
-
+    url('admin/', admin.site.urls),
+    url(r'api-auth/', include('rest_framework.urls')),
 ]

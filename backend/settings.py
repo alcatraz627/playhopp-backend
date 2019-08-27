@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     # Installed Packages
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_swagger',
 
     # Project Apps
     'toys',
@@ -139,9 +141,19 @@ STATIC_URL = '/static/'
 ###########  Custom settings ###########
 ########################################
 
+# https://chrisbartos.com/articles/how-to-implement-token-authentication-with-django-rest-framework/
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ],
 }
 
