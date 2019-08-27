@@ -38,7 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Installed Packages
     'rest_framework',
+
+    # Project Apps
+    'toys',
+    'customers',
+    # 'subscriptions',
 ]
 
 MIDDLEWARE = [
@@ -129,9 +135,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+########################################
+###########  Custom settings ###########
+########################################
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ],
 }
+
+# AUTHENTICATION_BACKENDS = ['customers.user_backend.EmailBackend']
+# ADMIN_LOGIN = 'email'
+
+AUTH_USER_MODEL = 'customers.Customer'
