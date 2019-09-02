@@ -16,6 +16,12 @@ class BrandSerializer(serializers.ModelSerializer):
 
 
 class ToySerializer(serializers.ModelSerializer):
+    likes = serializers.SerializerMethodField()
+
+    def get_likes(self, obj):
+        return 300
+
+
     class Meta:
         model = Toy
         fields = '__all__'

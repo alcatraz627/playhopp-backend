@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.conf import settings
 
 
@@ -21,7 +20,6 @@ class Category(models.Model):
 
 class Toy(models.Model):
     title = models.CharField(max_length=200)
-    brief = models.CharField(max_length=500)
     description = models.TextField(default="")
     skills = models.TextField(default="")
     playIdeas = models.TextField(default="")
@@ -33,7 +31,11 @@ class Toy(models.Model):
     maxAge = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
 
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    # @property
+    # def likes(self):
+    #     return 300
 
     def __str__(self):
         return self.title
