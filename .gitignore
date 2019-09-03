@@ -1,3 +1,4 @@
 .vscode
 *.pyc
 __pycache__
+backend/local_settings.py
