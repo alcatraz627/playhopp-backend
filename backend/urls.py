@@ -41,11 +41,11 @@ schema_view = get_swagger_view(title='Playhopp API')
 
 
 urlpatterns = [
-    url(r'^token_login/$', CustomAuthToken.as_view(), name='token_login'),
+    url(r'^api/token_login/$', CustomAuthToken.as_view(), name='token_login'),
 
-    url(r'^', include(router.urls)),
-    url(r'^swagger', schema_view),
+    url(r'^api/', include(router.urls)),
+    url(r'^api/swagger', schema_view),
 
-    url('admin/', admin.site.urls),
-    url(r'api-auth/', include('rest_framework.urls')),
+    url('api/admin/', admin.site.urls),
+    url(r'api/api-auth/', include('rest_framework.urls')),
 ]
