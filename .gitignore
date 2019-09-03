@@ -2,3 +2,5 @@
 *.pyc
 __pycache__
 backend/local_settings.py
+venv/
+backend/static

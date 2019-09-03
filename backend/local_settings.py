@@ -1,14 +1,18 @@
 ########################################
 ###########  Custom settings ###########
 ########################################
+import os
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'playhopp',
-        'USER': 'playhopp',
+        'NAME': 'postgres',
+        'USER': 'postgres',
         'PASSWORD': 'pwdplayhopp',
-        'HOST': 'localhost',
+        'HOST': 'database-1.cnmqi18xci2d.ap-south-1.rds.amazonaws.com',
         'PORT': '5432'
     }
 }
@@ -34,3 +38,5 @@ REST_FRAMEWORK = {
 # ADMIN_LOGIN = 'email'
 
 AUTH_USER_MODEL = 'customers.Customer'
+
+ALLOWED_HOSTS = ['ec2-35-154-205-76.ap-south-1.compute.amazonaws.com', '35.154.205.76', 'localhost', '0.0.0.0']
