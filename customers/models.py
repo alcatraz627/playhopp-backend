@@ -29,8 +29,12 @@ class HoppList(models.Model):
     toys = models.ManyToManyField(Toy)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
 
+    current = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    # TODO: Renew
 
     def __str__(self):
         return "[id: {}] {} items for {}".format(self.id, self.toys.count(), self.customer.username)

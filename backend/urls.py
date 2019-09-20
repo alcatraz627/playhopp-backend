@@ -25,7 +25,7 @@ from rest_framework.authtoken import views as rest_framework_views
 from rest_framework_swagger.views import get_swagger_view
 
 from toys.views import ToyViewSet, BrandViewSet, CategoryViewSet
-from customers.views import CustomerViewSet, CustomAuthToken
+from customers.views import CustomerViewSet, CustomAuthToken, HoppListViewSet
 
 # Set up user
 User = get_user_model()
@@ -36,6 +36,7 @@ router.register(r'customers', CustomerViewSet)
 router.register(r'toys', ToyViewSet)
 router.register(r'brands', BrandViewSet)
 router.register(r'categories', CategoryViewSet)
+router.register(r'hopplist', HoppListViewSet)
 
 schema_view = get_swagger_view(title='Playhopp API')
 
@@ -44,6 +45,7 @@ urlpatterns = [
     url(r'^api/token_login/$', CustomAuthToken.as_view(), name='token_login'),
 
     url(r'^api/', include(router.urls)),
+    # url(r'^api/hopplist/', HoppListView.as_view(), name='hopplist'),
     url(r'^api/swagger', schema_view),
 
     url('api/admin/', admin.site.urls),

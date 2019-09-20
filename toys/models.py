@@ -27,8 +27,11 @@ class Toy(models.Model):
     # primaryImage = >img
     # images = >img
     primaryImage = models.CharField(default="", max_length=800)
-    minAge = models.IntegerField()
-    maxAge = models.IntegerField()
+    minAge = models.IntegerField(default=3)
+    maxAge = models.IntegerField(default=8)
+    piecesNumber = models.CharField(default="", max_length=100)
+    points = models.IntegerField(default=1)
+
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, null=True)
