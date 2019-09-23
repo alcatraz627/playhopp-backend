@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Customer, HoppList
+from .models import Customer, HoppList, Subscription
 
 class CustomerSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False, write_only=True)
@@ -31,3 +31,16 @@ class HoppListSerializer(serializers.ModelSerializer):
     class Meta:
         model=HoppList
         fields = '__all__'
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    customer = serializers.PrimaryKeyRelatedField(read_only=True)
+    hopplist = serializers.SerializerMethodField()
+
+    def get_hopplist(self, obj):
+        return obj.hopplist.id
+        # return HoppListSerializer(obj.hopplist).data
+
+    class Meta:
+        model=Subscription
+        fields = ['id', 'hopplist', 'customer', 'address', 'contact_number', 'email']
