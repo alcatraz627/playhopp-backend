@@ -1,12 +1,22 @@
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.dispatch import receiver
-
+from django.core.files.storage import FileSystemStorage
 from rest_framework.authtoken.models import Token
-
 from toys.models import Toy
 
+# For uploading images
+fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+
+def nameFile(mediaType):
+    def f(instance, filename):
+        return '/'.join([mediaType, '.'.join([str(instance.id), filename.split('.')[-1]]) ])
+
+    return f
+
+# Create auth token when a user is registered/logged in
 @receiver(models.signals.post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
@@ -17,6 +27,8 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 class Customer(AbstractUser):
     address = models.TextField(default="")
     contact_number = models.CharField(max_length=20)
+
+    profile_pic = models.ImageField(upload_to=nameFile('customer'), storage=fs, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)

@@ -1,5 +1,25 @@
+import os
 from django.db import models
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
+# For uploading images
+fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+
+def nameFile(mediaType):
+    def f(instance, filename):
+        return '/'.join([mediaType, '.'.join([str(instance.id), filename.split('.')[-1]]) ])
+
+    return f
+
+# MEDIA_ROOT/toys/{id}.jpg
+# MEDIA_ROOT/toys/{id}_1.jpg
+def nameToyImage(toyNumbering):
+    def f(instance, filename):
+        return '/'.join([toyNumbering, '.'.join([str(instance.id), filename.split('.')[-1]]) ])
+
+    return f
+
 
 
 # Create your models here.

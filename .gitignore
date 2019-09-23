@@ -3,4 +3,7 @@
 __pycache__
 backend/local_settings.py
 venv/
+env/
 backend/static
+media
+start.sh

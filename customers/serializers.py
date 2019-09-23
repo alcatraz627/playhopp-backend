@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Customer, HoppList
 
 class CustomerSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(required=True, write_only=True)
+    password = serializers.CharField(required=False, write_only=True)
 
     def create(self, validated_data):
         user = super(CustomerSerializer, self).create(validated_data)
@@ -12,10 +12,17 @@ class CustomerSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def update(self, instance, validated_data):
+        super(CustomerSerializer, self).update(instance, validated_data)
+        if 'password' in validated_data: instance.set_password(validated_data['password'])
+        if 'username' in validated_data: instance.email = validated_data['username']
+        instance.save()
+        return instance
+
 
     class Meta:
         model=Customer
-        fields = ['username', 'password', 'first_name', 'last_name','address', 'contact_number']
+        fields = ['username', 'password', 'first_name', 'last_name','address', 'contact_number', 'profile_pic']
         # fields = '__all__'
 
 
