@@ -3,9 +3,11 @@ from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status, permissions, authentication
 from rest_framework.decorators import action
 
+from rest_framework.authtoken.models import Token
 from ..models import Customer
 from ..serializers import CustomerSerializer
-from rest_framework.authtoken.models import Token
+
+from backend.helpers import get_image_url
 
 # Create your views here.
 class CustomerViewSet(viewsets.GenericViewSet,
@@ -27,11 +29,12 @@ class CustomerViewSet(viewsets.GenericViewSet,
 
     @action(detail=False, methods=["post"])
     def get_user(self, request):
-        token = request.data["token"]
         if "token" in request.data:
+            token = request.data["token"]
             t = Token.objects.filter(key=token).first()
+
             return (
-                Response({"token": t.key, **CustomerSerializer(t.user).data})
+                Response({"token": t.key, **CustomerSerializer(t.user).data, "profile_pic": get_image_url(t.user.profile_pic, request)})
                 if t is not None
                 else Response("Token does not exist", status=status.HTTP_404_NOT_FOUND)
             )
@@ -46,6 +49,7 @@ class CustomerViewSet(viewsets.GenericViewSet,
         token, created = Token.objects.get_or_create(user=serializer.instance)
         print(serializer.instance)
 
+        # TODO: Set a default avatar as profile pic
         return Response(
             {
                 "token": token.key,

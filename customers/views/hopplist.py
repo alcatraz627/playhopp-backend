@@ -12,8 +12,8 @@ class HoppListViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins
     queryset = HoppList.objects.all()
     serializer_class = HoppListSerializer
 
-    authentication_classes = [authentication.TokenAuthentication,authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
+    # permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=["GET"])
     def current(self, request, *args, **kwargs):
