@@ -61,4 +61,4 @@ class Toy(models.Model):
     #     return 300
 
     def __str__(self):
-        return self.title
+        return "{} | {}".format(self.title, self.id)

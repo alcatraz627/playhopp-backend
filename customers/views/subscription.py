@@ -9,18 +9,20 @@ class SubscriptionViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
 
-    authentication_classes = [authentication.TokenAuthentication,authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data, request.user)
+        serData = {**request.data, 'customer': request.user}
+        print(serData)
 
-        serData = {**request.data, customer: request.user}
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=serData)
         serializer.is_valid(raise_exception=True)
+        s = Subscription.objects.create(**serData)
         # serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(SubscriptionSerializer(s).data, status=status.HTTP_201_CREATED)
 
     # @action(detail=False, methods=["GET"])
     # def current(self, request, *args, **kwargs):

@@ -25,7 +25,8 @@ from rest_framework.authtoken import views as rest_framework_views
 from rest_framework_swagger.views import get_swagger_view
 
 from toys.views import ToyViewSet, BrandViewSet, CategoryViewSet
-from customers.views import CustomerViewSet, CustomAuthToken, HoppListViewSet, SubscriptionViewSet
+from customers.views import CustomerViewSet, CustomAuthToken, HoppListViewSet, SubscriptionViewSet, \
+        check_username, verify_code, update_password
 
 # Set up user
 User = get_user_model()
@@ -38,6 +39,7 @@ router.register(r'brands', BrandViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'hopplist', HoppListViewSet)
 router.register(r'subscription', SubscriptionViewSet)
+# router.register(r'forgotpass/check_username', check_username)
 
 schema_view = get_swagger_view(title='Playhopp API')
 
@@ -45,10 +47,16 @@ schema_view = get_swagger_view(title='Playhopp API')
 urlpatterns = [
     # To prefix for nginx
     url(r'^api/', include([
-            url(r'^token_login/$', CustomAuthToken.as_view(), name='token_login'),
-            url('admin/', admin.site.urls),
             url(r'api-auth/', include('rest_framework.urls')),
+            url(r'^token_login/$', CustomAuthToken.as_view(), name='token_login'),
+            url('forgotpass/check$', check_username),
+            url('forgotpass/verify$', verify_code),
+            url('forgotpass/update$', update_password),
+
             url(r'^', include(router.urls)),
+
+            url('admin/', admin.site.urls),
             url(r'^swagger', schema_view),
+
     ]))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
